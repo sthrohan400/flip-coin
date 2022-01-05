@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Three JS</title>    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0px;
+            background: #000000;
+        }
+        button {
+            display: block;
+            position: relative;
+            margin: 0.5em 0;
+            padding: .8em 2.2em;
+            cursor: pointer;
+            background: #FFFFFF;
+            border: none;
+            border-radius: .4em;
+            text-transform: uppercase;
+            font-size: 1.4em;
+        }
+        .btn-flip-div {
+            position: absolute;
+            top: calc(5% + 550px);
+            margin: 0px 100px;
+            /* display: none; */
+        }
+        .canvas-game-container {
+            width: 400px;
+            height: 600px;
+            margin: 5% auto;
+        
+        }
+        #canvas-paper {
+            background-color: rgb(145, 137, 137);
+            width: inherit;
+            height: inherit;
+            padding: 0px;
+            position: static;
+        }
+        
+    </style>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "./build/three.module.js",
+            "three/examples/jsm/controls/OrbitControls":"./jsm/controls/OrbitControls.js",
+            "three/examples/jsm/libs/stats.module":"./jsm/libs/stats.module.js",
+            "three/examples/jsm/libs/dat.gui.module":"./jsm/libs/dat.gui.module.js",
+            "three/examples/jsm/loaders/GLTFLoader":"./jsm/loaders/GLTFLoader.js",
+            "three/examples/jsm/loaders/OBJLoader":"./jsm/loaders/OBJLoader.js"
+          }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="canvas-game-container">
+        <canvas id="canvas-paper"></canvas>
+        <div class="btn-flip-div">
+            <button class="btn btn-flip" id="btn-flip-start">Flip Coin</button>
+            <!-- <button class="btn btn-flip" id="btn-flip-stop">Stop</button> -->
+        </div>
+    </div>
+    
+    <script type="module" src="three-initv2.js"></script>
+</body>
+
+</html
