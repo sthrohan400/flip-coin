@@ -29,13 +29,13 @@
             margin: 0px 100px;
             /* display: none; */
         }
-        .canvas-game-container {
+        .game-container {
             width: 400px;
             height: 600px;
             margin: 5% auto;
         
         }
-        #canvas-paper {
+        #canvas {
             background-color: rgb(145, 137, 137);
             width: inherit;
             height: inherit;
@@ -52,22 +52,23 @@
             "three/examples/jsm/libs/stats.module":"./jsm/libs/stats.module.js",
             "three/examples/jsm/libs/dat.gui.module":"./jsm/libs/dat.gui.module.js",
             "three/examples/jsm/loaders/GLTFLoader":"./jsm/loaders/GLTFLoader.js",
-            "three/examples/jsm/loaders/OBJLoader":"./jsm/loaders/OBJLoader.js"
+            "three/examples/jsm/loaders/OBJLoader":"./jsm/loaders/OBJLoader.js",
+            "/config": "./config.js"
           }
         }
     </script>
 </head>
 
 <body>
-    <div class="canvas-game-container">
-        <canvas id="canvas-paper"></canvas>
+    <div class="game-container" id="game-container">
+        <canvas id="canvas"></canvas>
         <div class="btn-flip-div">
             <button class="btn btn-flip" id="btn-flip-start">Flip Coin</button>
             <!-- <button class="btn btn-flip" id="btn-flip-stop">Stop</button> -->
         </div>
     </div>
     
-    <script type="module" src="three-initv2.js"></script>
+    <script type="module" src="three-init.js"></script>
 </body>
 
 </html

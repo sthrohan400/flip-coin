@@ -141,11 +141,3 @@ flipStartBtnDom.addEventListener("click", () => {
     }
     
 });
-// flipStopBtnDom.addEventListener("click", () => {
-//     if(animationFlagObj.rotation === true) {
-//         animationFlagObj.rotation = false;
-//         animationFlagObj.position = false;
-//         animationFlagObj.pause = true;
-//         renderWithRotate();
-//     }
-// });
