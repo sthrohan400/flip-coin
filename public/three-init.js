@@ -4,11 +4,19 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { config } from "./config";
 
 function threeRender() {
+    const resultTextMessage = {
+        0: {
+            message: "TAIL",
+            description: "It's a"
+        },
+        1: {
+            message: "HEAD",
+            description: "It's a"
+        }
+    }
     const state = {
         result: false,
         coinObject: false,
-        coinObjectInitRotation: false,
-        coinObjectInitPosition: false,
         animation: {
             renderId: false,
             clicked: false,
@@ -16,10 +24,13 @@ function threeRender() {
             position: {
                 reversed: false,
                 max: 50,
-                min: 0
+                min: 10
             }
         }
     };
+    const popup = document.getElementById("popup-window");
+    const flipBtn = document.getElementById("btn-flip-start");
+    const popCloseBtn = document.getElementById("popup-window-close");
     // Generate true or false 1 || 0 based on random odd even numbers
     // 1- HEAD ,  0 - TAIL
     function generateWinner() {
@@ -28,9 +39,9 @@ function threeRender() {
     // Coin Object Rotation to X axis 
     function setRotation(isCompleted) {
         if(isCompleted === false) {
-            state.coinObject.rotation.x += Math.abs((state.animation.position.max - state.animation.position.min) / (Math.abs(state.coinObject.position.y + 1) * 11));
+            state.coinObject.rotation.x += Math.abs((state.animation.position.max - state.animation.position.min) / (Math.abs(state.coinObject.position.y + 1) * parseInt(config.coin.rotation.speed)));
         } else {
-            state.coinObject.rotation.set(state.coinObjectInitRotation.x, state.coinObjectInitRotation.y, state.coinObjectInitRotation.z);
+            state.coinObject.rotation.set(config.coin.rotation.x,config.coin.rotation.y,config.coin.rotation.z);
         }
     }
     // Coin object move to y position both direction based on max and min position set in config
@@ -38,20 +49,24 @@ function threeRender() {
     function setPosition(isCompleted) {
         if(isCompleted === false) {
             if(state.animation.position.reversed === true) {
-                state.coinObject.position.y -= Math.abs((state.animation.position.max - state.animation.position.min) / (Math.abs(state.coinObject.position.y + 1) * 10));
+                state.coinObject.position.y -= Math.abs((state.animation.position.max - state.animation.position.min) / (Math.abs(state.coinObject.position.y + 1) * parseInt(config.coin.position.speed)));
             } else {
-                state.coinObject.position.y += Math.abs((state.animation.position.max - state.animation.position.min) / (Math.abs(state.coinObject.position.y + 1) * 10));
+                state.coinObject.position.y += Math.abs((state.animation.position.max - state.animation.position.min) / (Math.abs(state.coinObject.position.y + 1) * parseInt(config.coin.position.speed)));
             }
         } else {
-            state.coinObject.position.set(state.coinObjectInitPosition.x, state.coinObjectInitPosition.y, state.coinObjectInitPosition.z);
+            state.coinObject.position.set(config.coin.position.x,config.coin.position.y,config.coin.position.z);
         }
+    }
+    function handlePopup(side) {
+        popup.style.display = "block";
+        const textMessage =  resultTextMessage[side].message;
+        popup.getElementsByClassName("win-msg")[0].textContent = textMessage;
     }
 
     function render() {
-        state.result = generateWinner();
-        console.log("Winner", state.result);
         // Load Textures
         const sceneBackground = new THREE.TextureLoader().load(config.scene.backgroundImage);
+        const coinTexture = new THREE.TextureLoader().load(config.coin.modelTexture);
         const objLoader = new OBJLoader();
         // Canvas Setup
         const gameContainer = document.getElementById(config.containerId);
@@ -75,18 +90,18 @@ function threeRender() {
         scene.add(light);
         // Function animates to display winning coin side
         // if winner is head it animates movement to convert coin to winning head side
+        // 1 - HEAD
+        // 2 - TAIL
         function setWinner(side) {
-            if(side === null || side !== 0 || side !== 1) {
+            if(side !== 0 && side !== 1) {
                 return;
             }
-            // Set rotation to initial state
-            setRotation(false);
-            setPosition(false);
+            // Set rotation and position to initial state
             if(side === 0) {
-                // Tail winning side
-                state.coinObjectInitRotation.y = Math.PI;
+                state.coinObject.rotation.x = (Math.PI + Math.PI / 8);
+
             } else {
-                //Head WInning side
+                // No need to as default rotation is head always
             }
         }
         function loadModelObject() {
@@ -97,17 +112,18 @@ function threeRender() {
                     if (child instanceof THREE.Mesh) {
                         // Non primitive data types in JS are passed by reference thus need to use clone func
                         const newMeshMaterial = child.material.clone();
-                        const color = (child.name == "Cylinder") ? new THREE.Color(config.coin.cylinderColor) : new THREE.Color(config.coin.color);
-                        newMeshMaterial.color = color;
+                        // Add texture to cylinder only
+                        if(child.name == "Cylinder") {
+                            newMeshMaterial.map = coinTexture;
+                        } else {
+                            newMeshMaterial.color = config.coin.color;
+                        }
                         child.material = newMeshMaterial.clone();
                     }
                 });
                 state.coinObject = object.clone();
-                state.coinObject.rotation.y = Math.PI;
                 state.coinObject.rotation.set(config.coin.rotation.x,config.coin.rotation.y,config.coin.rotation.z);
                 state.coinObject.position.set(config.coin.position.x,config.coin.position.y, config.coin.position.z);
-                state.coinObjectInitPosition = state.coinObject.position.clone();
-                state.coinObjectInitRotation = state.coinObject.rotation.clone();
                 object = state.coinObject;
                 scene.add(object);
                 animate();
@@ -125,17 +141,15 @@ function threeRender() {
                 state.animation.completed = true;
             }
              // Check if coin object is ready and start the position change / y axis translate
-            if(!!state.coinObjectInitPosition) {
-                setPosition(state.animation.completed);
-            }
-            if(!!state.coinObjectInitRotation) {
-                setRotation(state.animation.completed);
-            }
+
+            setPosition(state.animation.completed);
+            setRotation(state.animation.completed);
 
             if(!!state.animation.renderId && state.animation.completed === true) {
                 setWinner(state.result);
+                handlePopup(state.result);
                 cancelAnimationFrame(handleAnimateLogic);
-                state.animation.completed = true;
+                state.animation.completed = false;
                 state.animation.clicked = false;
                 state.animation.position.renderId = null;
                 state.animation.position.reversed = false;
@@ -149,9 +163,15 @@ function threeRender() {
             renderer.render(scene,camera);
         }
         function addListeners() {
-            const flipBtn = document.getElementById("btn-flip-start");
+            popCloseBtn.addEventListener("click", () => {
+                popup.style.display = "none";
+            });
             flipBtn.addEventListener("click", () => {
                 if(state.animation.clicked === false) {
+                    popCloseBtn.click();
+                    state.result = generateWinner();
+                    setRotation(false);
+                    setPosition(false);
                     state.animation.clicked = true;
                     handleAnimateLogic();
                 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Three JS</title>    
+    <title>Flip 3D Coin - By Rohan Shrestha</title>    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
@@ -42,6 +42,32 @@
             padding: 0px;
             position: static;
         }
+        .popup-container {
+            position: absolute;
+            top: calc(5% + 300px);
+            width: inherit;
+            min-height: 200px;
+            max-height: 400px;
+            margin: -200px auto;
+        }
+        .popup {
+            display: none;
+            width: 80%;
+            padding: 10px;
+            background: #FEFEFE;
+            margin: auto;
+            border-radius: 0.4em;
+            text-align: center;
+        }
+        .popup > .popup-close {
+            float: right;
+            cursor: pointer;
+            background: #282454;
+            padding: 7px;
+            color: #FFFFFF;
+            border-radius: 5px;
+
+        }
         
     </style>
     <script type="importmap">
@@ -66,8 +92,14 @@
             <button class="btn btn-flip" id="btn-flip-start">Flip Coin</button>
             <!-- <button class="btn btn-flip" id="btn-flip-stop">Stop</button> -->
         </div>
+        <div class="popup-container">
+            <div class="popup" id="popup-window">
+                <a class="popup-close" id="popup-window-close">X</a>
+                <h2> Wow, Result: </h2>
+                <h2 class="win-msg"> </h2>
+            </div>
+        </div>
     </div>
-    
     <script type="module" src="three-init.js"></script>
 </body>
 
