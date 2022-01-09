@@ -17,7 +17,8 @@
             margin: 0.5em 0;
             padding: .8em 2.2em;
             cursor: pointer;
-            background: #FFFFFF;
+            background: rgba(255,255,255, 0.8);
+            opacity: 0.8;
             border: none;
             border-radius: .4em;
             text-transform: uppercase;
@@ -33,6 +34,7 @@
             width: 400px;
             height: 600px;
             margin: 5% auto;
+            border: 2px solid #FEFEFE;
         
         }
         #canvas {
@@ -54,7 +56,8 @@
             display: none;
             width: 80%;
             padding: 10px;
-            background: #FEFEFE;
+            background: rgba(255,255,255, 0.8);
+            opacity: 0.8;
             margin: auto;
             border-radius: 0.4em;
             text-align: center;
@@ -95,8 +98,7 @@
         <div class="popup-container">
             <div class="popup" id="popup-window">
                 <a class="popup-close" id="popup-window-close">X</a>
-                <h2> Wow, Result: </h2>
-                <h2 class="win-msg"> </h2>
+                <h2> You got  <span class="win-msg"> </span> </h2>
             </div>
         </div>
     </div>

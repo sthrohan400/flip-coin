@@ -8,7 +8,7 @@ const config =  {
     canvasContainerId:  "canvas",
     containerId: "game-container",
     scene: {
-        backgroundImage: "/textures/background-2.jpg",
+        backgroundImage: "/textures/background.jpg",
         backgroundColor: new THREE.Color(0x000000),
         intensity: 1
     },
@@ -16,7 +16,7 @@ const config =  {
         fov: 60,
         aspect: 1,
         near: 1,
-        far: 2000,
+        far: 3000,
         position: {
             x: 0,
             y: 25,
@@ -36,7 +36,7 @@ const config =  {
         modelObj: "/textures/coin-model.obj",
         modelTexture: "/textures/coin-texture.jpg",
         cylinderColor: new THREE.Color(0x282454),
-        color: new THREE.Color(0x282454),
+        color: new THREE.Color(0x181C2F),
         position: {
             speed: 3,
             x: 0,
